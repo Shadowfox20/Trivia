@@ -4,7 +4,9 @@
   "description": "Trivia game site, implemented in Node.js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/Shadowfox20/Trivia/issues"
   },
-  "homepage": "https://github.com/Shadowfox20/Trivia#readme"
+  "homepage": "https://github.com/Shadowfox20/Trivia#readme",
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.9.6"
+  }
 }
