@@ -1,0 +1,20 @@
+{
+  "name": "trivia",
+  "version": "1.0.0",
+  "description": "Trivia game site, implemented in Node.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shadowfox20/Trivia.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Shadowfox20/Trivia/issues"
+  },
+  "homepage": "https://github.com/Shadowfox20/Trivia#readme"
+}
