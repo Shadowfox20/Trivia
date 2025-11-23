@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 function Start() {
     const navagate = useNavigate();
     const [query, setQuery] = React.useState({
-        category: 0,
+        category: '',
         difficulty: '',
     });
 
@@ -66,6 +66,7 @@ function Start() {
             </p>
             <p>Difficulty:
                 <select id="difficulty" name="difficultyInput" onChange={(e) => setCompletion(e.target.difficulty.value)}>
+                    <option value="">Any</option>
                     <option value="easy">Easy</option>
                     <option value="medium">Medium</option>
                     <option value="hard">Hard</option>
