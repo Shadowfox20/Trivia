@@ -1,16 +1,33 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-// https://opentdb.com/api.php?amount=8&category=21&difficulty=hard&type=multiple&token=YOURTOKEN
 function Start() {
     const navagate = useNavigate();
-    const [query, setQuery] = React.useState({
-        category: '',
-        difficulty: '',
-    });
+    const [category, setCategory] = React.useState('');
+    const [difficulty, setDifficulty] = React.useState('');
+    const [sessionToken, setSessionToken] = React.useState(localStorage.getItem('sessionToken') || '');
 
-    function checkField(field) {
-        const value = query[field];
+    React.useEffect(() => {
+        if (!sessionToken) {
+            (async () => {
+                // Attempts to set the session token if not already set (prevents repeat questions)
+                try {
+                    const response = await fetch('https://opentdb.com/api_token.php?command=request');
+                    const data = await response.json();
+                    if (data && data.token) {
+                        // sets the token locally and in state
+                        setSessionToken(data.token);
+                        localStorage.setItem('sessionToken', data.token);
+                    }
+                } catch (err) {
+                    console.error('Failed to get session token', err);
+                }
+            })();
+        }
+    }, [sessionToken]);
+
+    function checkField(field, value) {
+        // Helper to format query fields, returns empty string if not set
         if (value) {
             return `&${field}=${value}`;
         }
@@ -20,19 +37,26 @@ function Start() {
     function handleStart() {
         (async () => {
             try {
+                // fetch questions, include query parameters if set
                 const response = await fetch(
-                    `https://opentdb.com/api.php?amount=8${checkField('category')}${checkField('difficulty')}&type=multiple&token=${localStorage.getItem('sessionToken') || ''}`
+                    `https://opentdb.com/api.php?amount=8${checkField('category', category)}${checkField('difficulty', difficulty)}&type=multiple${localStorage.getItem('token', sessionToken)}`
                 );
                 const data = await response.json();
+
+                // Check for response code 0 (success)
                 if (data && data.response_code !== 0) {
-                    console.error('Failed to get questions', data);
+                    console.error('Failed to get questions from trivia database', data);
                     return;
                 }
+
+                // Navigate to game, passing questions via reactDOM state
                 if (data && data.results) {
                     navagate("/game", {state: data.results});
                 }
-            } catch (err) {
-                console.error('Failed to get session token', err);
+            } 
+            
+            catch (err) {
+                console.error('Failed to start game', err);
             }
         })();
     }
@@ -41,7 +65,7 @@ function Start() {
         <div>
             <h1>Welcome to the Quiz Game!</h1>
             <p>Category: 
-                <select id="category" name="categoryInput" onChange={(e) => setQuery(e.target.category.value)}>
+                <select id="category" name="categoryInput" onChange={(e) => setCategory(e.target.value)}>
                     <option value="">Any</option>
                     <option value="9">Other</option>
                     <option value="10">Books</option>
@@ -65,7 +89,7 @@ function Start() {
                 </select>
             </p>
             <p>Difficulty:
-                <select id="difficulty" name="difficultyInput" onChange={(e) => setCompletion(e.target.difficulty.value)}>
+                <select id="difficulty" name="difficultyInput" onChange={(e) => setDifficulty(e.target.value)}>
                     <option value="">Any</option>
                     <option value="easy">Easy</option>
                     <option value="medium">Medium</option>

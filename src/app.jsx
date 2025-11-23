@@ -6,27 +6,6 @@ import End from './end/end';
 
 
 function App() {
-    const [sessionToken, setSessionToken] = React.useState(localStorage.getItem('sessionToken') || '');
-    const [questions, setQuestions] = React.useState([]);
-    const [score, setScore] = React.useState(0);
-
-    React.useEffect(() => {
-        if (!sessionToken) {
-            (async () => {
-                try {
-                    const response = await fetch('https://opentdb.com/api_token.php?command=request');
-                    const data = await response.json();
-                    if (data && data.token) {
-                        setSessionToken(data.token);
-                        localStorage.setItem('sessionToken', data.token);
-                    }
-                } catch (err) {
-                    console.error('Failed to get session token', err);
-                }
-            })();
-        }
-    }, [sessionToken]);
-
     return (
         <BrowserRouter>
             <Routes>
