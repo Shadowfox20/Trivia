@@ -7,10 +7,10 @@ function Game() {
     const navagate = useNavigate();
     const location = useLocation();
     const questions = location.state || [];
-    const score = 0;
-    const streak = 0;
-    const question = 0;
-    const { answer, setAnswer } = React.useState(Math.floor(Math.random() * 4));
+    const [ score, setScore ] = React.useState(0);
+    const [ streak, setStreak ] = React.useState(0);
+    const [ question, setQuestion ] = React.useState(0);
+    const  [answer, setAnswer ] = React.useState(Math.floor(Math.random() * 4));
 
     React.useEffect(() => {
         if (questions.length === 0) {
@@ -23,8 +23,33 @@ function Game() {
         // Logic to finish the game and navigate to the end screen
     }
 
+    function difficultyMultiplier(difficulty) {
+        switch (difficulty) {
+            case 'easy':
+                return 1;
+            case 'medium':
+                return 1.5;
+            case 'hard':
+                return 2;
+            default:
+                return 1;
+        }
+    }
+
     function handleAnswer(response) {
-        
+        if (response === questions[question].correct_answer) {
+            setScore(score + 100 * ((streak * 0.5) + 1) * difficultyMultiplier(questions[question].difficulty));
+            setStreak(streak + 1);
+        }
+        else {
+            setStreak(0);
+        }
+        if (question + 1 >= questions.length) {
+            handleFinish();
+            return;
+        }
+        setQuestion(question + 1);
+        setAnswer(Math.floor(Math.random() * 4));
     }
 
     function formatQuestion() {
@@ -56,6 +81,7 @@ function Game() {
 	return (
 		<div>
 			<h2>Game</h2>
+            <h3>Score: {score} | Streak: {streak}</h3>
 			<div>{formatQuestion()}</div>
 			<NavLink to="/end">Finish</NavLink>
 		</div>
