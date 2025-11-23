@@ -37,15 +37,37 @@ function Start() {
     function handleStart() {
         (async () => {
             try {
-                // fetch questions, include query parameters if set
-                const response = await fetch(
-                    `https://opentdb.com/api.php?amount=8${checkField('category', category)}${checkField('difficulty', difficulty)}&type=multiple${localStorage.getItem('token', sessionToken)}`
-                );
+                // set up query parameters
+                const url = `https://opentdb.com/api.php?amount=8${checkField('category', category)}${checkField('difficulty', difficulty)}&type=multiple${checkField('token', sessionToken)}`
+                // fetch questions
+                const response = await fetch(url);
                 const data = await response.json();
+
+                if (data && data.response_code === 3) {
+                    // Token not valid, need to reset
+                    console.warn('Session token expired, resetting token');
+                    try {
+                        const tokenResponse = await fetch('https://opentdb.com/api_token.php?command=request');
+                        const tokenData = await tokenResponse.json();
+                        if (tokenData && tokenData.token) {
+                            // sets the token locally and in state
+                            setSessionToken(tokenData.token);
+                            localStorage.setItem('sessionToken', tokenData.token);
+                        }
+                    } catch (err) {
+                        console.error('Failed to get session token', err);
+                    }
+                    // set up query parameters
+                    const url = `https://opentdb.com/api.php?amount=8${checkField('category', category)}${checkField('difficulty', difficulty)}&type=multiple${checkField('token', sessionToken)}`
+                    // fetch questions
+                    const response = await fetch(url);
+                    const data = await response.json();
+                }
+
 
                 // Check for response code 0 (success)
                 if (data && data.response_code !== 0) {
-                    console.error('Failed to get questions from trivia database', data);
+                    console.error('Failed to get questions from trivia database', {url, sessionToken}, data);
                     return;
                 }
 
