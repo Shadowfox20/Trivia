@@ -73,7 +73,7 @@ function Start() {
 
                 // Navigate to game, passing questions via reactDOM state
                 if (data && data.results) {
-                    navagate("/game", {state: data.results});
+                    navagate("/game", {state: { questions: data.results}});
                 }
             } 
             
