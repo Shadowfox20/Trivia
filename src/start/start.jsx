@@ -85,8 +85,8 @@ function Start() {
     }
 
     return (
-        <div>
-            <h1>Welcome to the Quiz Game!</h1>
+        <div className="app-body">
+            <h1>Welcome to the Trivia Challenge!</h1>
             <p>Category: 
                 <select id="category" name="categoryInput" onChange={(e) => setCategory(e.target.value)}>
                     <option value="">Any</option>

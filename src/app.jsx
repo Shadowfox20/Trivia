@@ -9,6 +9,10 @@ import './app.css';
 function App() {
     return (
         <BrowserRouter>
+            <header>
+                <h1>Trivia Challenge</h1>
+                <p>Test your knowledge!</p>
+            </header>
             <Routes>
                 <Route path="/" element={<Start />} />
                 <Route path="/game" element={<Game />} />

@@ -3,7 +3,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import './game.css';
 
 function Game() {
-    const navagate = useNavigate();
+    const navigate = useNavigate();
     const location = useLocation();
     const questions = location.state.questions || [];
     const [ score, setScore ] = React.useState(0);
@@ -14,12 +14,12 @@ function Game() {
     React.useEffect(() => {
         if (questions.length === 0) {
             console.error('No questions available for the game');
-            navagate("/");
+            navigate("/");
         }
     });
 
     function handleFinish() {
-        navagate("/end", {state: { score: score, steak: streak } });
+        navigate("/end", {state: { score: score, steak: streak } });
     }
 
     function difficultyMultiplier(difficulty) {
@@ -83,7 +83,7 @@ function Game() {
     }
 
 	return (
-		<div>
+		<div className="app-body">
 			<h2>Game</h2>
             <h3>Score: {score} | Streak: {streak}</h3>
 			<div>{formatQuestion()}</div>

@@ -7,6 +7,7 @@ function End() {
     const score = location.state.score || 0;
     const streak = location.state.streak || 0;
 
+
     function determineRank() {
         if (score >= 6000 && streak >= 8) {
             return 'S+';
@@ -23,12 +24,12 @@ function End() {
     }
 
 	return (
-		<div>
+		<div className="app-body">
 			<h2>Results</h2>
             <h3>Your Score: {score}</h3>
             <h1>Rank {determineRank()}</h1>
 			<p>Thanks for playing!</p>
-			<NavLink to="/">Play Again</NavLink>
+            <div className="link-button"><NavLink to="/">Play Again</NavLink></div>
 		</div>
 	);
 }

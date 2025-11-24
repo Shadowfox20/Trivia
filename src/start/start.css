@@ -1,0 +1,24 @@
+select {
+    background-color: #6f5e06;
+    color: #fff;
+    border: none;
+    padding: 5px;
+}
+
+button {
+    background-color: #6f5e06;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+button:hover {
+    background-color: #f7e382;
+    color: #000;
+}
+
+.app-body p {
+    font-size: 1.2em;
+}
