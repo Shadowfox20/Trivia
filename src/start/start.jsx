@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+import './start.css';
 
 function Start() {
     const navagate = useNavigate();

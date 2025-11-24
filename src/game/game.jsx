@@ -1,8 +1,7 @@
 import React from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import './game.css';
 
-//{"type":"multiple","difficulty":"medium","category":"Animals","question":"What type of animal is a natterjack?",
-// "correct_answer":"Toad","incorrect_answers":["Bird","Fish","Insect"]}
 function Game() {
     const navagate = useNavigate();
     const location = useLocation();
