@@ -6,7 +6,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 function Game() {
     const navagate = useNavigate();
     const location = useLocation();
-    const questions = location.state || [];
+    const questions = location.state.questions || [];
     const [ score, setScore ] = React.useState(0);
     const [ streak, setStreak ] = React.useState(0);
     const [ question, setQuestion ] = React.useState(0);
@@ -20,7 +20,7 @@ function Game() {
     });
 
     function handleFinish() {
-        // Logic to finish the game and navigate to the end screen
+        navagate("/end", {state: { score: score, steak: streak } });
     }
 
     function difficultyMultiplier(difficulty) {
@@ -44,7 +44,7 @@ function Game() {
         else {
             setStreak(0);
         }
-        if (question + 1 >= questions.length) {
+        if (question ===  7) {
             handleFinish();
             return;
         }
@@ -53,13 +53,16 @@ function Game() {
     }
 
     function formatQuestion() {
+        if (!questions[question]) {
+            return <div>Loading next question...</div>;
+        }
         const currentQuestion = questions[question];
         const choices = currentQuestion.incorrect_answers;
         choices.splice(answer, 0, currentQuestion.correct_answer);
 
         function formatAnswer(index) {
             return (
-                <button key={index} onClick={() => handleAnswer(choices[index])}>
+                <button className="answer-button" key={index} onClick={() => handleAnswer(choices[index])}>
                     {choices[index]}
                 </button>
             );
@@ -68,9 +71,11 @@ function Game() {
         return (
             <div>
                 <h3>{currentQuestion.question}</h3>
-                <div>
+                <div className = "answer-pair">
                     {formatAnswer(0)}
                     {formatAnswer(1)}
+                </div>
+                <div className = "answer-pair">
                     {formatAnswer(2)}
                     {formatAnswer(3)}
                 </div>
