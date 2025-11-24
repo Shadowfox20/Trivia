@@ -88,7 +88,6 @@ function Game() {
 			<h2>Game</h2>
             <h3>Score: {score} | Streak: {streak}</h3>
 			<div>{formatQuestion()}</div>
-			<NavLink to="/end">Finish</NavLink>
 		</div>
 	);
 }
